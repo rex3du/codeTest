@@ -12,4 +12,12 @@ struct ImageData: Codable,Hashable,Equatable {
     let tags: [String]
     let width: Int
     let height: Int
+    
+    var isPortrait: Bool {
+        return height > width
+    }
+
+    var isLandscape: Bool {
+        return width > height
+    }
 }
