@@ -139,15 +139,10 @@ final class codeTestTests: XCTestCase {
         mockDataSource = MockImageDataSource(result: .success(response))
         viewModel = await SearchImageViewModel(datasource: mockDataSource)
 
-        await viewModel.searchImage(color: "pink")
+        await viewModel.searchImage(color: "pink blue")
         let searchResults = await viewModel.searchResults
 
         let expectedResults = [
-            ImageData(name: "Image1",
-                      tags: [
-                          "pink",
-                          "purple"
-                      ], width: 1024, height: 683),
             
             ImageData(name: "Image3",
                       tags: [
@@ -185,7 +180,7 @@ final class codeTestTests: XCTestCase {
         mockDataSource = MockImageDataSource(result: .success(response))
         viewModel = await SearchImageViewModel(datasource: mockDataSource)
 
-        await viewModel.searchImage(color: "black")
+        await viewModel.searchImage(color: "black pink")
 
         let searchResults = await viewModel.searchResults
 

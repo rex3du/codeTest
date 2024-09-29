@@ -36,8 +36,11 @@ class SearchImageViewModel: ObservableObject {
     }
     
     func filterColor(color: String, results: [ImageData]) -> [ImageData] {
-        if !color.isEmpty {
-            return results.filter { $0.tags.contains(color.lowercased())}
+        let colors = color.lowercased().split(separator: " ").map { String($0) }
+        if !colors.isEmpty {
+            return results.filter { image in
+                colors.allSatisfy { image.tags.contains($0) }
+            }
         }
         return results
     }
