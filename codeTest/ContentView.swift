@@ -18,7 +18,7 @@ struct ContentView: View {
             SearchBar(text: $viewModel.searchText)
                 .onChange(of: viewModel.searchText, { oldValue, newValue in
                     Task {
-                        await viewModel.searchImage(color: newValue)
+                        await viewModel.searchImage(searchText: newValue)
                     }
                 })
             
@@ -55,7 +55,7 @@ struct ContentView: View {
         .padding()
         .onAppear {
             Task {
-                await viewModel.searchImage(color:"")
+                await viewModel.searchImage(searchText:"")
             }
         }
     }
