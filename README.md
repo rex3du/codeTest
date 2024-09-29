@@ -14,7 +14,7 @@ App Requirements
 5. Add support for the "OR" operator, e.g. "red OR white is:portrait" to return the names of objects that match any of the given conditions. (in branch feature/step5)
 
 
-##Installation 
+## Installation 
 
 1. Clone the Repository:
 2. Navigate to the project directory.
@@ -26,14 +26,14 @@ App Requirements
 It loads all images as default and 
 You can enter your search query in the search bar. 
 
-##Project Structure
+## Project Structure
 
 #Model:
 ImageData: Represents an image with properties like name, tags, width, and height.
 ImageResponse: Contains the imagePath and an array of ImageData.
 
 #ViewModel:
-#SearchImageViewModel: Handles the business logic, including data fetching and filtering based on search criteria.
+SearchImageViewModel: Handles the business logic, including data fetching and filtering based on search criteria.
 
 #View:
 ContentView: The main user interface where users can input search terms and view results.
@@ -47,3 +47,4 @@ RequestManager and NetworkManager: Handle network requests.
 
 #Unit Tests: codeTestTests.swift
 Comprehensive tests covering various filtering scenarios and ensuring the ViewModel behaves as expected.
+
