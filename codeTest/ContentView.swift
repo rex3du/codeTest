@@ -16,6 +16,11 @@ struct ContentView: View {
         VStack {
             
             SearchBar(text: $viewModel.searchText)
+                .onChange(of: viewModel.searchText, { oldValue, newValue in
+                    Task {
+                        await viewModel.searchImage(color: newValue)
+                    }
+                })
             
             ScrollView {
                 LazyVStack {
@@ -50,7 +55,7 @@ struct ContentView: View {
         .padding()
         .onAppear {
             Task {
-                await viewModel.searchImage()
+                await viewModel.searchImage(color:"")
             }
         }
     }
