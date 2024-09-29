@@ -36,14 +36,30 @@ class SearchImageViewModel: ObservableObject {
     }
     
     func filterImage(input: String, results: [ImageData]) -> [ImageData] {
-        let keywords = input.lowercased().split(separator: " ").map { String($0) }
-        
-        let colors = keywords.filter { !$0.starts(with: "is:") }
-        let orientations = keywords.filter { $0.starts(with: "is:") }
-        
-        if !colors.isEmpty || !orientations.isEmpty {
-              return results.filter { image in
+          let orSegments = input.lowercased().components(separatedBy: " or ")
+
+          var conditionsList = [[String]]()
+
+          for segment in orSegments {
+              let keywords = segment.split(separator: " ").map { String($0) }
+              conditionsList.append(keywords)
+          }
+
+          return results.filter { image in
+              for conditions in conditionsList {
+                  var colors: [String] = []
+                  var orientations: [String] = []
+
+                  for condition in conditions {
+                      if condition.starts(with: "is:") {
+                          orientations.append(condition)
+                      } else {
+                          colors.append(condition)
+                      }
+                  }
+
                   let colorMatch = colors.allSatisfy { image.tags.contains($0) }
+
                   let orientationMatch = orientations.allSatisfy { filter in
                       switch filter {
                       case "is:portrait":
@@ -54,10 +70,13 @@ class SearchImageViewModel: ObservableObject {
                           return false
                       }
                   }
-                  return colorMatch && orientationMatch
+
+                  if colorMatch && orientationMatch {
+                      return true
+                  }
               }
+              return false
           }
-          return results
     }
 }
 

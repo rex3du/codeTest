@@ -143,7 +143,6 @@ final class codeTestTests: XCTestCase {
         let searchResults = await viewModel.searchResults
 
         let expectedResults = [
-            
             ImageData(name: "Image3",
                       tags: [
                           "pink",
@@ -202,7 +201,6 @@ final class codeTestTests: XCTestCase {
         let searchResults = await viewModel.searchResults
 
         let expectedResults = [
-            
             ImageData(name: "Image2",
                       tags: [
                           "green",
@@ -221,7 +219,7 @@ final class codeTestTests: XCTestCase {
                           "green",
                           "yellow",
                           "grey"
-                      ], width: 1024, height: 683),
+                      ], width: 1024, height: 683)
         ]
         XCTAssertEqual(searchResults, expectedResults)
     }
@@ -327,13 +325,13 @@ final class codeTestTests: XCTestCase {
         await viewModel.searchImage(searchText: "is:portrait")
         let searchResults = await viewModel.searchResults
 
-        let expectedResults = [ ImageData(name: "Image5",
-                                          tags: [
-                                              "blue",
-                                              "yellow",
-                                              "green",
-                                              "black"
-                                          ], width: 300, height: 683)]
+        let expectedResults = [ImageData(name: "Image5",
+                                         tags: [
+                                             "blue",
+                                             "yellow",
+                                             "green",
+                                             "black"
+                                         ], width: 300, height: 683)]
         
         XCTAssertEqual(searchResults, expectedResults)
     }
@@ -404,5 +402,181 @@ final class codeTestTests: XCTestCase {
         let searchResults = await viewModel.searchResults
 
         XCTAssertEqual(searchResults, sampleData)
+    }
+    
+    func testFilterColor_WithSingleORConditions() async {
+        let sampleData = [
+            ImageData(name: "Image1",
+                      tags: [
+                          "pink",
+                          "purple"
+                      ], width: 1024, height: 683),
+            ImageData(name: "Image2",
+                      tags: [
+                          "green",
+                          "brown",
+                          "yellow",
+                          "red",
+                          "grey"
+                      ], width: 1024, height: 683),
+            ImageData(name: "Image3",
+                      tags: [
+                          "pink",
+                          "blue"
+                      ], width: 1024, height: 683),
+            ImageData(name: "Image4",
+                      tags: [
+                          "red",
+                          "brown",
+                          "white",
+                          "blue",
+                          "green",
+                          "yellow",
+                          "grey"
+                      ], width: 1024, height: 683),
+            
+            ImageData(name: "Image5",
+                      tags: [
+                          "blue",
+                          "yellow",
+                          "green",
+                          "black"
+                      ], width: 1024, height: 683)
+        ]
+        
+        let expectedImagePath = "http://frontendtest.jobs.fastmail.com.user.fm/images/"
+
+        let response = ImageDataResponse(imagePath: expectedImagePath, images: sampleData)
+        mockDataSource = MockImageDataSource(result: .success(response))
+        viewModel = await SearchImageViewModel(datasource: mockDataSource)
+
+        await viewModel.searchImage(searchText: "pink or blue is:landscape")
+        let searchResults = await viewModel.searchResults
+
+        let expectedResults = [
+            ImageData(name: "Image1",
+                      tags: [
+                          "pink",
+                          "purple"
+                      ], width: 1024, height: 683),
+            
+            ImageData(name: "Image3",
+                      tags: [
+                          "pink",
+                          "blue"
+                      ], width: 1024, height: 683),
+            
+            ImageData(name: "Image4",
+                      tags: [
+                          "red",
+                          "brown",
+                          "white",
+                          "blue",
+                          "green",
+                          "yellow",
+                          "grey"
+                      ], width: 1024, height: 683),
+            
+            ImageData(name: "Image5",
+                      tags: [
+                          "blue",
+                          "yellow",
+                          "green",
+                          "black"
+                      ], width: 1024, height: 683)
+        ]
+        XCTAssertEqual(searchResults, expectedResults)
+    }
+    
+    func testFilterColor_WithMultipleORConditions() async {
+        let sampleData = [
+            ImageData(name: "Image1",
+                      tags: [
+                          "pink",
+                          "purple"
+                      ], width: 1024, height: 683),
+            ImageData(name: "Image2",
+                      tags: [
+                          "green",
+                          "brown",
+                          "yellow",
+                          "red",
+                          "grey"
+                      ], width: 350, height: 683),
+            ImageData(name: "Image3",
+                      tags: [
+                          "pink",
+                          "blue"
+                      ], width: 1024, height: 683),
+            ImageData(name: "Image4",
+                      tags: [
+                          "red",
+                          "brown",
+                          "white",
+                          "blue",
+                          "green",
+                          "yellow",
+                          "grey"
+                      ], width: 1024, height: 683),
+            
+            ImageData(name: "Image5",
+                      tags: [
+                          "blue",
+                          "yellow",
+                          "green",
+                          "black"
+                      ], width: 1024, height: 683)
+        ]
+        
+        let expectedImagePath = "http://frontendtest.jobs.fastmail.com.user.fm/images/"
+        
+        let response = ImageDataResponse(imagePath: expectedImagePath, images: sampleData)
+        mockDataSource = MockImageDataSource(result: .success(response))
+        viewModel = await SearchImageViewModel(datasource: mockDataSource)
+        
+        await viewModel.searchImage(searchText: "pink or blue is:landscape or green")
+        let searchResults = await viewModel.searchResults
+        
+        let expectedResults = [
+            ImageData(name: "Image1",
+                      tags: [
+                          "pink",
+                          "purple"
+                      ], width: 1024, height: 683),
+            ImageData(name: "Image2",
+                      tags: [
+                          "green",
+                          "brown",
+                          "yellow",
+                          "red",
+                          "grey"
+                      ], width: 350, height: 683),
+            
+            ImageData(name: "Image3",
+                      tags: [
+                          "pink",
+                          "blue"
+                      ], width: 1024, height: 683),
+            
+            ImageData(name: "Image4",
+                      tags: [
+                          "red",
+                          "brown",
+                          "white",
+                          "blue",
+                          "green",
+                          "yellow",
+                          "grey"
+                      ], width: 1024, height: 683),
+            
+            ImageData(name: "Image5",
+                      tags: [
+                          "blue",
+                          "yellow",
+                          "green",
+                          "black"
+                      ], width: 1024, height: 683)
+        ]
+        XCTAssertEqual(searchResults, expectedResults)
     }
 }
